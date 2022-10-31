@@ -3,5 +3,6 @@
 int main()
 {
     int p,q;
+    p = (int*)malloc(n*sizeof(int));
     return 0;
 }
