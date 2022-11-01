@@ -16,5 +16,7 @@ int main() {
 
     printf("%s",p);
     free(p);
+    free(c);
+    free(c1);
     return 0;
 }
