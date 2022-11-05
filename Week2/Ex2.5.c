@@ -1,5 +1,4 @@
 #include<stdio.h>
-#include<stdlib.h>
 typedef struct pbook
 {
     char name[30];
@@ -19,17 +18,16 @@ int main()
     printf("----------------------------------\n");
     for (int i=0; i<a; i++)
     {
-        printf("\nNhap ten nguoi thu %d: ",i+1);
+        printf("Nhap ten nguoi thu %d: ",i+1);
         scanf("%s", &info[i].name);
         printf("Nhap SDT nguoi thu %d: ",i+1);
         scanf("%s", &info[i].phonenum);
         printf("Nhap email nguoi thu %d: ",i+1);
         scanf("%s", &info[i].email);
         printf("Nhap dia chi nguoi thu %d: ",i+1);
-        scanf("%s \n", &info[i].address);
+        scanf("%s", &info[i].address);
         printf("----------------------------------\n");
     }
-
     fwrite(info, a, sizeof(pbook_t), p);
     fclose(p);
 }
