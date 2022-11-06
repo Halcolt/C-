@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include<math.h>
+
 
 typedef struct point 
 {
@@ -14,11 +14,10 @@ typedef struct circle
 } circle_t;
 
 int checkradius(point_t p, circle_t c) {
-    if ((p.x-c.center.x)*(p.x-c.center.x) + (p.y - c.center.y)*(p.y - c.center.y) < c.radius*c.radius) {
+    if ((p.x-c.center.x)*(p.x-c.center.x) - (p.y - c.center.y)*(p.y - c.center.y) < (c.radius)*(c.radius)) {
         return 1;
     }
     return 0;
-}
 
 int main() {
     point_t p;
@@ -33,5 +32,7 @@ int main() {
         printf("yes");
     } else {printf("no");}
     return 0;
+    
+}
     
 }
