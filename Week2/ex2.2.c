@@ -11,8 +11,15 @@ typedef struct circle
     double radius;
 } circle_t;
 
-int checkradius(point_t p, circle_t c) {
-    if ((p.x-c.center.x)*(p.x-c.center.x) + (p.y-c.center.y)*(p.y-c.center.y) < (c.radius)*(c.radius)){
+int checkradius(point_t p, circle_t c) 
+{
+    int a, b;
+    a = (p.x-c.center.x)*(p.x-c.center.x) + (p.y-c.center.y)*(p.y-c.center.y); 
+    b = (c.radius)*(c.radius);
+    printf("%ld %ld \n",p.x,p.y);
+    if (a < b)
+    {
+        
         return 1;
     }
     else return 0;
@@ -22,11 +29,11 @@ int main() {
     point_t p;
     circle_t c;
     printf("Nhap toa do diem:");
-    scanf("%f%f",&p.x,&p.y);
+    scanf("%lf %lf",&p.x,&p.y);
 
     printf("Nhap tam va ban kinh duong tron:");
-    scanf("%f%f%f",&c.center.x,&c.center.y,&c.radius);
-
+    scanf("%lf %lf %lf",&c.center.x,&c.center.y,&c.radius);
+    printf("%ld %ld \n",p.x,p.y);
     if (checkradius(p,c) == 1){
         printf("yes");
     } 
