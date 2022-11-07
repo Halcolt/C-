@@ -11,7 +11,7 @@ typedef struct pbook
 int main()
 {
     FILE *p;
-    pbook_t info[100];
+    pbook_t info[100],read[100];
     p = fopen("Phonebook.txt","w+");
     printf("Nhap so luong thong tin nguoi dung: ");
     int a;
@@ -37,5 +37,11 @@ int main()
   
     }
     fwrite(info, a, sizeof(pbook_t), p);
+    fseek(p, 0, SEEK_SET);
+    fread(read, sizeof(pbook_t), a, p);
+    for(int i = 0; i<a; i++)
+    {
+        printf("%s %s %s %s\n", read[i].name,read[i].phonenum,read[i].email,read[i].address);
+    }
     fclose(p);
 }
