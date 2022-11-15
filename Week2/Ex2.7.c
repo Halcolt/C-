@@ -26,6 +26,7 @@ int main()
     char s[7]; //for first char, no number have more than 6 digit
     int lock;
     int tmp; 
+    int x;     //for atoi
     for(int i = 1; i < new_n; i++)  //read first number
     {
         int x;     //for atoi
@@ -42,7 +43,7 @@ int main()
     printf("\n%d \n",lock);
 //--------------------------------------------------------------
 
-    int *B =(int *)malloc(sizeof(int)*(lock+2));
+    int *B =(int *)malloc(sizeof(int)*(lock+2));            // need to out put char?????
     int count = 0;
     int sum = 0;
    for(int i = tmp+1, j=0,x; i <= new_n,count < lock; i++)  //read first number
@@ -53,7 +54,7 @@ int main()
             x = atoi(s); 
             B[count] = x;printf("%d ",B[count]);
             j = 0;
-            sum = sum + B[count];
+            sum = sum + x;
             count++; 
             for(int k=0; k<7;k++)
             {
@@ -82,8 +83,12 @@ int main()
     {
         printf("%d ",B[i]);
     }
-    int *ptr=B;
-   fwrite(B,sizeof(int),count,p);
+
+    for(int i = 0; i <= count; i++)
+    {
+        fprintf(p, "%d ", B[i]);
+    }
+   
 free(A);
 free(B);
 fclose(p);
