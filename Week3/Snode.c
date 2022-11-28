@@ -10,8 +10,8 @@ typedef struct Profile
 char name[MAX_L]; // ten sinh vien
 char email[MAX_L];// email cua sinh vien
 struct Profile* next;
-struct Profile* prev;
 }Profile;
+
 Profile *first, *last;
 //-----------------------------------------------------------
 Profile* makeProfile(char* name, char* email)
@@ -20,7 +20,6 @@ Profile* makeProfile(char* name, char* email)
     strcpy(node->name, name);
     strcpy(node->email,email);
     node->next=NULL;
-    node->prev=NULL;
     return node;
 }
 //-----------------------------------------------------------
@@ -34,7 +33,6 @@ void insertLast(char* name, char* email){
     if(listEmpty()){
         first = profile; last = profile;//TH danh sach rong
     }else{
-        profile->prev = last;
         last->next = profile;
         last = profile;
     }
@@ -64,13 +62,12 @@ int ListEmpty()
     return first == NULL && last == NULL;
 }
 //-----------------------------------------------------------
-Profile* removeProfile(Profile* f, char* name) 
+Profile* removeProfile(Profile* f, char* name)
 {
     if(ListEmpty) {return NULL;}
     if(strcmp(f->name,name) == 0)
     {
         Profile* tmp = f->next;
-        tmp->prev = f->prev;
         free(f);
         if(tmp == NULL) {last == NULL;}
         return tmp;
@@ -80,9 +77,8 @@ Profile* removeProfile(Profile* f, char* name)
             return f;
         }
 }
-
 //-----------------------------------------------------------
-void processFindLTR()
+void processFind()
 {
     char name[256];
     scanf("%s",name);
@@ -111,3 +107,55 @@ void processLoad()
     load(filename);
 }
 //-----------------------------------------------------------
+void processStore() // luu du lieu DS vao file van ban
+{
+    char filename[256];
+    scanf("%s",filename);
+    FILE* f = fopen(filename,"w");
+    for(Profile* p = first; p != NULL; p = p->next){
+        fprintf(f,"%s %s",p->name,p->email);
+        if(p->next != NULL) fprintf(f,"\n");
+    }
+    fclose(f);
+}
+//-----------------------------------------------------------
+void processInsert()
+{
+    char name[256], email[256];
+    scanf("%s%s",name,email);
+    insertLast(name,email);
+}
+//-----------------------------------------------------------
+void processRemove()
+{
+    char name[256];
+    scanf("%s",name);
+    first = removeProfile(first,name);
+}
+//-----------------------------------------------------------
+
+
+void printList()
+{
+    for(Profile* p = first; p != NULL; p = p->next)
+        printf("%s, %s\n",p->name, p->email);
+}
+
+int main()// chay chuong trinh trong che do interactive
+{
+    initList();
+    while(1)
+    {
+    printf("Enter command: ");
+    char cmd[256];
+    scanf("%s",cmd);
+    if(strcmp(cmd,"Quit")==0) break;
+    else if(strcmp(cmd,"Load")==0) processLoad();
+    else if(strcmp(cmd,"Print")==0) printList();
+    else if(strcmp(cmd,"Find")==0) processFind();
+    else if(strcmp(cmd,"Insert")==0) processInsert();
+    else if(strcmp(cmd,"Remove")==0) processRemove();
+    else if(strcmp(cmd,"Store")==0) processStore();
+    }
+    return 0;
+}

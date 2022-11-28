@@ -10,7 +10,7 @@ int main()
     int new_n = 1;          //newchar
     printf("Mang: ");
     while (1 == 1) 
-        {
+    {
         scanf("%c", &n);
         if (n == '\n')
         {break;}
@@ -46,7 +46,7 @@ int main()
     int *B =(int *)malloc(sizeof(int)*(lock+2));            // need to out put char?????
     int count = 0;
     int sum = 0;
-   for(int i = tmp+1, j=0,x; i <= new_n,count < lock; i++)  //read first number
+   for(int i = tmp+1, j=0,x; i <= new_n,count < lock; i++)  
     {
         
         if (A[i] == ' '|| i == new_n)

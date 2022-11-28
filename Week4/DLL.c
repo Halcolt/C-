@@ -9,7 +9,7 @@ typedef struct Profile{
     struct Profile *prev;
 }Profile;
 
-Profile *first,*last,*p;
+Profile *first,*last,*p,*profile = NULL;
 
 void initList(){
 	first = NULL, last = NULL;
@@ -23,7 +23,6 @@ void push(int new_data)
 	Profile* Node = (struct Profile*)malloc(sizeof(struct Profile));
 
 	Node->data = new_data;
-
 	Node->next = p;
 	Node->prev = NULL;
 
@@ -31,8 +30,22 @@ void push(int new_data)
 		p->prev = Node;
 	p = Node;
 }
-
-
+Profile Find(int data){
+    scanf("%d",data);
+    
+    for(Profile* p = first; p != NULL; p = p->next){
+        if(p->data == data){
+            profile = p;
+            break;
+        }
+    }
+    if(profile == NULL){
+        printf("NOT FOUND profile %d\n",data);
+    } else {
+        printf("FOUND profile %d\n",profile->data);
+    }
+    return *profile;
+}
 void insertAfter(int new_data)
 {
     Profile* prev_node;
@@ -78,6 +91,8 @@ void insertLast(int new_data)
 
 	
 }
+
+
 //NOPE//
 void load(){
 	char filename[256];
@@ -94,23 +109,7 @@ void load(){
     fclose(f);
 }
 
-Profile Find(int data){
-    scanf("%d",data);
-    Profile profile = NULL;
-    for(Profile* p = first; p != NULL; p = p->next){
-        if(p->data == data){
-            profile = p;
-            break;
-        }
-    }
-    if(profile == NULL){
-        printf("NOT FOUND profile %d\n",data);
-    } else {
-        printf("FOUND profile %d\n",profile->data);
-    }
-    
-    return profile;
-}
+
 
 void Write(){// luu du lieu DS vao file van ban
     char filename[256];
