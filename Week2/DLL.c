@@ -96,7 +96,7 @@ void load(){
 
 Profile Find(int data){
     scanf("%d",data);
-    Profile profile = NULL;
+    Profile* profile = NULL;
     for(Profile* p = first; p != NULL; p = p->next){
         if(p->data == data){
             profile = p;
@@ -108,8 +108,8 @@ Profile Find(int data){
     } else {
         printf("FOUND profile %d\n",profile->data);
     }
-    
-    return profile;
+    Profile x = *profile;
+    return x;
 }
 
 void Write(){// luu du lieu DS vao file van ban
