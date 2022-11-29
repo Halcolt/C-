@@ -67,7 +67,6 @@ int stackEmpty()
     return top == NULL;
 }
 
-
 int push(int** A,int a, int b)
 {
     Node* tmp = top;

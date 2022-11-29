@@ -63,36 +63,27 @@ void insertAfter(int new_data)
 	prev_node->next = Node;
 
 	Node->prev = prev_node;
-
 }
 
-void insertLast(int new_data)
+int insertLast(int new_data)
 {
-	Profile* Node = (Profile*)malloc(sizeof(struct Profile));
-
-	Profile* last = p; 
-
-	Node->data = new_data;
-
-	Node->next = NULL;
-
-	if (p == NULL) {
-		Node->prev = NULL;
-		p = Node;
 	
-	}
-
+	Profile* Node = (Profile*)malloc(sizeof(struct Profile));
+	Node->next = NULL;
+	last->next = Node;
+	printf("2\n");
+	Node->prev = last;
+	Node->data = new_data;
+	
+	
+	
+	last = Node;
+	
+	/*
 	while (last->next != NULL)
 		last = last->next;
-
-	last->next = Node;
-
-	Node->prev = last;
-
-	
+		*/
 }
-
-
 //NOPE//
 void load(){
 	char filename[256];
@@ -101,9 +92,10 @@ void load(){
 	scanf("%s", &filename);
     FILE* f = fopen(filename,"r");
     if(f == NULL) printf("file not found\n");
-    while(!feof(f)){
-        
+    while(!feof(f))
+	{
         fscanf(f,"%d",data);
+		printf("1\n");
         insertLast(data);
     }
     fclose(f);
