@@ -3,13 +3,13 @@
 #include <string.h>
 #include <conio.h>
 
-typedef struct Profile{
+typedef struct Node{
     int data;
-    struct Profile *next;
-    struct Profile *prev;
-}Profile;
+    struct Node *next;
+    struct Node *prev;
+}Node;
 
-Profile *first,*last,*p,*profile = NULL;
+Node *first,*last,*p,*Node = NULL;
 
 void initList(){
 	first = NULL, last = NULL;
@@ -20,7 +20,7 @@ int listEmpty(){
 
 void push(int new_data)
 {
-	Profile* Node = (struct Profile*)malloc(sizeof(struct Profile));
+	Node* Node = (struct Node*)malloc(sizeof(struct Node));
 
 	Node->data = new_data;
 	Node->next = p;
@@ -30,31 +30,31 @@ void push(int new_data)
 		p->prev = Node;
 	p = Node;
 }
-Profile Find(int data){
+Node Find(int data){
     scanf("%d",data);
     
-    for(Profile* p = first; p != NULL; p = p->next){
+    for(Node* p = first; p != NULL; p = p->next){
         if(p->data == data){
-            profile = p;
+            Node = p;
             break;
         }
     }
-    if(profile == NULL){
-        printf("NOT FOUND profile %d\n",data);
+    if(Node == NULL){
+        printf("NOT FOUND Node %d\n",data);
     } else {
-        printf("FOUND profile %d\n",profile->data);
+        printf("FOUND Node %d\n",Node->data);
     }
-    return *profile;
+    return *Node;
 }
 void insertAfter(int new_data)
 {
-    Profile* prev_node;
+    Node* prev_node;
 	if (prev_node == NULL) {
 		printf("the given previous node cannot be NULL");
 	}
     else Find(prev_node->data);
 
-	Profile* Node = (Profile*)malloc(sizeof(struct Profile));
+	Node* Node = (Node*)malloc(sizeof(struct Node));
 
 	Node->data = new_data;
 
@@ -68,7 +68,7 @@ void insertAfter(int new_data)
 int insertLast(int new_data)
 {
 	
-	Profile* Node = (Profile*)malloc(sizeof(struct Profile));
+	Node* Node = (Node*)malloc(sizeof(struct Node));
 	Node->next = NULL;
 	last->next = Node;
 	printf("2\n");
@@ -107,7 +107,7 @@ void Write(){// luu du lieu DS vao file van ban
     char filename[256];
     scanf("%s",filename);
     FILE* f = fopen(filename,"w");
-    for(Profile* p = first; p != NULL; p = p->next){
+    for(Node* p = first; p != NULL; p = p->next){
         fprintf(f,"%s",p->data);
         if(p->next != NULL) fprintf(f,"\n");
     }
@@ -116,8 +116,8 @@ void Write(){// luu du lieu DS vao file van ban
 
 void printList()
 {
-    Profile* node;
-	Profile* last;
+    Node* node;
+	Node* last;
 	printf("\nTraversal in forward direction \n");
 	while (node != NULL) {
 		printf(" %d ", node->data);

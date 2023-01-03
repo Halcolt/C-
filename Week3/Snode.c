@@ -5,18 +5,18 @@
 #define MAX_L 256
 
 //-----------------------------------------------------------
-typedef struct Profile
+typedef struct Node
 {
 char name[MAX_L]; // ten sinh vien
 char email[MAX_L];// email cua sinh vien
-struct Profile* next;
-}Profile;
+struct Node* next;
+}Node;
 
-Profile *first, *last;
+Node *first, *last;
 //-----------------------------------------------------------
-Profile* makeProfile(char* name, char* email)
+Node* makeNode(char* name, char* email)
 {
-    Profile* node = (Profile*)malloc(sizeof(Profile));
+    Node* node = (Node*)malloc(sizeof(Node));
     strcpy(node->name, name);
     strcpy(node->email,email);
     node->next=NULL;
@@ -29,12 +29,12 @@ int listEmpty()
 }
 //-----------------------------------------------------------
 void insertLast(char* name, char* email){
-    Profile* profile = makeProfile(name,email);//khoi tao node moi
+    Node* Node = makeNode(name,email);//khoi tao node moi
     if(listEmpty()){
-        first = profile; last = profile;//TH danh sach rong
+        first = Node; last = Node;//TH danh sach rong
     }else{
-        last->next = profile;
-        last = profile;
+        last->next = Node;
+        last = Node;
     }
 }
 
@@ -62,18 +62,18 @@ int ListEmpty()
     return first == NULL && last == NULL;
 }
 //-----------------------------------------------------------
-Profile* removeProfile(Profile* f, char* name)
+Node* removeNode(Node* f, char* name)
 {
     if(ListEmpty) {return NULL;}
     if(strcmp(f->name,name) == 0)
     {
-        Profile* tmp = f->next;
+        Node* tmp = f->next;
         free(f);
         if(tmp == NULL) {last == NULL;}
         return tmp;
     } else 
         {
-            f->next = removeProfile(f,name); /// from removeProfile(f->name,name)
+            f->next = removeNode(f,name); /// from removeNode(f->name,name)
             return f;
         }
 }
@@ -82,20 +82,20 @@ void processFind()
 {
     char name[256];
     scanf("%s",name);
-    Profile* profile = NULL;
-    for(Profile* p = first; p != NULL; p = p->next)
+    Node* Node = NULL;
+    for(Node* p = first; p != NULL; p = p->next)
     {
         if (strcmp(p->name,name) == 0)
         {
-            profile = p;break;
+            Node = p;break;
         }
     }
-    if(profile == NULL)
+    if(Node == NULL)
     {
-        printf("NOT FOUND PROFILE %s\n",name);
+        printf("NOT FOUND Node %s\n",name);
     }else
         {
-            printf("FOUND PROFILE %s, %s", profile->name, profile->email);
+            printf("FOUND Node %s, %s", Node->name, Node->email);
         }
 }
 
@@ -112,7 +112,7 @@ void processStore() // luu du lieu DS vao file van ban
     char filename[256];
     scanf("%s",filename);
     FILE* f = fopen(filename,"w");
-    for(Profile* p = first; p != NULL; p = p->next){
+    for(Node* p = first; p != NULL; p = p->next){
         fprintf(f,"%s %s",p->name,p->email);
         if(p->next != NULL) fprintf(f,"\n");
     }
@@ -130,14 +130,14 @@ void processRemove()
 {
     char name[256];
     scanf("%s",name);
-    first = removeProfile(first,name);
+    first = removeNode(first,name);
 }
 //-----------------------------------------------------------
 
 
 void printList()
 {
-    for(Profile* p = first; p != NULL; p = p->next)
+    for(Node* p = first; p != NULL; p = p->next)
         printf("%s, %s\n",p->name, p->email);
 }
 
