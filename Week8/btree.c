@@ -56,33 +56,21 @@ Tree *addRightChild(int parent, int value)
     tmp->right = newNode(value);
 }
 
-// Read File
-void read(char *filename)
-{
-    FILE *p = fopen(filename, "r+");
-    // Tree *cur_node = (Tree *)malloc(sizeof(Tree));
-    int left, right, parent;
-
-    while (fscanf(p, "%d %d %d", &parent, &left, &right) != EOF)
-    {
-        if (parent == -2)
-            break;
-        if (root == NULL)
-        {
-            root = newNode(parent);
-        }
-        
-        if (left > -1)
-        {
-            addLeftChild(parent, left);
-        }
-
-        if (right > -1)
-        {
-            
-            addRightChild(parent, right);
-        }
-        // printf("%d,%x\n", root->id, root);
+//Read File
+void read(char* filename){
+    FILE* p = fopen(filename,"r");
+    Tree* cur_node = (Tree*)malloc(sizeof(Tree));
+    int left,right;
+    
+    while(fscanf(p, "%d %d %d", &cur_node->id, &left, &right) !=EOF){
+    if (root == NULL)
+        root = newNode(cur_node->id);;
+    if(cur_node->id == -2) 
+        break;
+    if(left > -1) 
+        addLeftChild(cur_node,left);
+    if(right > -1) 
+        addRightChild(cur_node,right);
     }
     fclose(p);
 }
@@ -92,79 +80,16 @@ void printTree(Tree *r, int level)
     if (r == NULL)
         return;
     for (int i = 0; i < level; i++)
-        printf(i == level - 1 ? "|_" : "| ");
-        printf("%d\n", r->id);
-        printTree(r->left, level + 1);
-        printTree(r->right, level + 1);
-
+    printf(i == level - 1 ? "|_" : "| ");
+    printf("%d\n", r->id);
+    printTree(r->left, level + 1);
+    printTree(r->right, level + 1);
 }
 
 int main()
 {
-    root = NULL;
-    int choose = 0,value,parent;
-option:
-     while (choose < 1 || choose > 8)
-    {
-        printf("-----------------------------------------------------\n");
-        printf("1. Doc du lieu tu file\n");
-        printf("2. In cay\n");
-        printf("3. Them mot con vao ben trai mot not\n");
-        printf("4. In danh sach tat ca thanh vien\n");
-        printf("5. Thoat\n");
-        printf("-----------------------------------------------------\n");
-        printf("Nhap lua chon: ");
-        scanf("%d", &choose);
-    }
+    Tree* p;
+    read("btree.txt");
+    printTree(p,3);
 
-    while (choose > 0 && choose < 8)
-    {
-        switch (choose)
-        {
-        case 1:
-            read("btree.txt");
-            choose = 0;
-            goto option;
-        case 2:
-            printTree(root,0);
-            choose = 0;
-            goto option;
-        case 3:
-            fflush(stdin);
-            printf("Nhap node can them: ");
-            scanf("%d",&parent);
-            if (FindNode(root, parent) == NULL)
-            {
-                printf("Khong tim thay ten node trong cay\n");
-                choose = 0;
-                goto option;
-            }
-            fflush(stdin);
-            printf("Nhap gia tri can them vao: ");
-            scanf("%s", value);
-            addLeftChild(parent, value);
-            choose = 0;
-            goto option;
-        case 4:
-            fflush(stdin);
-            printf("Nhap node can them: ");
-            scanf("%d",&parent);
-            if (FindNode(root, parent) == NULL)
-            {
-                printf("Khong tim thay ten node trong cay\n");
-                choose = 0;
-                goto option;
-            }
-            fflush(stdin);
-            printf("Nhap gia tri can them vao: ");
-            scanf("%s", value);
-            addRightChild(parent, value);
-            choose = 0;
-            goto option;
-            
-        case 5:
-            free(root);
-            return 0;
-        }
-    }
 }
