@@ -56,35 +56,21 @@ Tree *addRightChild(int parent, int value)
     tmp->right = newNode(value);
 }
 
-// Read File
-void read(char *filename)
-{
-    FILE *p = fopen(filename, "r+");
-    // Tree *cur_node = (Tree *)malloc(sizeof(Tree));
-    int left, right, parent;
-
-    while (fscanf(p, "%d %d %d", &parent, &left, &right) != EOF)
-    {
-        if (parent == -2)
-            break;
-        if (root == NULL)
-        {
-            root = newNode(parent);
-        }
-        printf("%d\n/////////\n", parent);
-        if (left > -1)
-        {
-            printf("%d\n++++++++\n", left);
-            addLeftChild(parent, left);
-        }
-        printf("ok %d,%d,%d \n", parent, left, right);
-
-        if (right > -1)
-        {
-            printf("%d\n********\n", right);
-            addRightChild(parent, right);
-        }
-        // printf("%d,%x\n", root->id, root);
+//Read File
+void read(char* filename){
+    FILE* p = fopen(filename,"r");
+    Tree* cur_node = (Tree*)malloc(sizeof(Tree));
+    int left,right;
+    
+    while(fscanf(p, "%d %d %d", &cur_node->id, &left, &right) !=EOF){
+    if (root == NULL)
+        root = newNode(cur_node->id);;
+    if(cur_node->id == -2) 
+        break;
+    if(left > -1) 
+        addLeftChild(cur_node,left);
+    if(right > -1) 
+        addRightChild(cur_node,right);
     }
     fclose(p);
 }
@@ -94,7 +80,7 @@ void printTree(Tree *r, int level)
     if (r == NULL)
         return;
     for (int i = 0; i < level; i++)
-        printf(i == level - 1 ? "|_" : "| ");
+    printf(i == level - 1 ? "|_" : "| ");
     printf("%d\n", r->id);
     printTree(r->left, level + 1);
     printTree(r->right, level + 1);
@@ -102,9 +88,8 @@ void printTree(Tree *r, int level)
 
 int main()
 {
-    root = NULL;
+    Tree* p;
+    read("btree.txt");
+    printTree(p,3);
 
-    read("Btree.txt");
-
-    printTree(root, 0);
 }
