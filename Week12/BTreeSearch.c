@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define M 100 // Size of the hash table
-
 // https://www.youtube.com/watch?v=dMyhU07qcgs
 typedef struct node
 {
@@ -12,35 +10,6 @@ typedef struct node
     struct node *right;
 } node;
 
-typedef struct HashTable
-{
-    node *address;
-    struct HashTable *next;
-} HashTable;
-
-HashTable table[M];
-
-int hash(char *s)
-{
-    int rs = 0;
-    for (int i = 0; i < strlen(s); ++i)
-        rs = (rs * 255 + s[i]) % M;
-    return rs;
-}
-
-void insertMap(int index, node *newNode)
-{
-    // printf("%d-\n", index);
-    HashTable *key = &table[index];
-    while (key->next != NULL)
-    {
-        key = key->next;
-    }
-    // key = (HashTable *)malloc(sizeof(HashTable));
-    key->address = newNode;
-    key->next = NULL;
-}
-
 node *createNode(char name[], char email[])
 {
     node *newNode = (node *)malloc(sizeof(node));
@@ -48,45 +17,33 @@ node *createNode(char name[], char email[])
     strcpy(newNode->email, email);
     newNode->left = NULL;
     newNode->right = NULL;
-    int index = hash(name);
-    insertMap(index, newNode);
-    // printf("%s\n", table[index].address->name);
-    //  printf("%d\n", index);
     return newNode;
 }
 
 node *insert(node *root, char name[], char email[])
 {
     if (root == NULL)
-    {
         return createNode(name, email);
-    }
+
     if (strcmp(name, root->name) < 0)
         root->left = insert(root->left, name, email);
     else if (strcmp(name, root->name) > 0)
         root->right = insert(root->right, name, email);
+
     return root;
 }
 
 node *Find(node *root, char name[])
 {
-    // print_hash_table();
-    int index = hash(name);
-    HashTable *key = &table[index];
-    if (key->address == NULL)
+    if (root == NULL || strcmp(root->name, name) == 0)
     {
-        return NULL;
+        return root;
     }
 
-    while (key != NULL)
-    {
-        if (strcmp(key->address->name, name) == 0)
-        {
-            return key->address;
-        }
-        key = key->next;
-    }
-    return NULL;
+    if (strcmp(name, root->name) < 0)
+        return Find(root->left, name);
+    else
+        return Find(root->right, name);
 }
 
 node *minValueNode(node *tmp)
@@ -95,6 +52,7 @@ node *minValueNode(node *tmp)
 
     while (current->left != NULL)
         current = current->left;
+
     return current;
 }
 
@@ -135,28 +93,19 @@ node *Remove(node *root, char name[])
     return root;
 }
 
-void print_hash_table()
+void print_tree(node *root)
 {
-    for (int i = 0; i < M; i++)
+    if (root != NULL)
     {
-        // printf("%d: ", i);
-        HashTable *key = &table[i];
-        if (key->address == NULL)
-        {
-            continue;
-        }
-        while (key != NULL)
-        {
-            printf("%s, %s\n", key->address->name, key->address->email);
-            key = key->next;
-        }
-        // printf("NULL\n");
+        print_tree(root->left);
+        printf("Name: %s, Email: %s\n", root->name, root->email);
+        print_tree(root->right);
     }
 }
+
 int main()
 {
     node *root = NULL;
-    // insert(root, NULL, NULL);
     int value, n, tmp, count = 0;
     char name[256], email[256];
 
@@ -180,6 +129,7 @@ int main()
                 else
                     insert(root, name, email);
             }
+            // print_tree(root);
         }
         else if (strcmp(cmd, "Remove") == 0)
         {
@@ -189,28 +139,18 @@ int main()
         else if (strcmp(cmd, "Find") == 0)
         {
             scanf("%s", &name);
-            if (root == NULL)
-            {
-                printf("Not found\n");
-                continue;
-            }
             node *tmp = Find(root, name);
             if (tmp == NULL)
             {
-                printf("Not found\n");
+                // printf("Not Found");
                 continue;
             }
-
-            printf("%d %s\n", hash(name), tmp->email);
-        }
-        else if (strcmp(cmd, "Insert") == 0)
-        {
-            scanf("%s %s", &name, &email);
-            insert(root, name, email);
+            printf("%s \n", tmp->email);
         }
         else if (strcmp(cmd, "Print") == 0)
         {
-            print_hash_table();
+            print_tree(root);
         }
     }
+    return 0;
 }
