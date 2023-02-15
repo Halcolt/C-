@@ -115,7 +115,7 @@ int main()
         scanf("%s", cmd);
         if (strcmp(cmd, "Quit") == 0)
         {
-            printf("Bye");
+            printf("Bye\n");
             return 0;
         }
         else if (strcmp(cmd, "Load") == 0)
@@ -151,6 +151,6 @@ int main()
         {
             print_tree(root);
         }
-    }
+        }
     return 0;
 }
