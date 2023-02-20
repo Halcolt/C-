@@ -19,6 +19,47 @@ typedef struct orders
 } orders;
 orders *head = NULL, *tail = NULL;
 
+orders *makeNode(int n)
+{
+    orders *NewOrder = (orders *)malloc(sizeof(orders));
+    NewOrder->A = (int *)malloc(sizeof(int) * n);
+    NewOrder->next = NULL;
+    return NewOrder;
+}
+
+void insert(orders *NewOrder, int tmp, int posi)
+{
+    NewOrder->A[posi] = tmp;
+    return;
+}
+
+void Print_Bill(orders *NewOrder, int n, Menu data[])
+{
+    double bill = 0;
+    for (int i = 0; i < n; i++)
+    {
+        data[i].in_stock = data[i].in_stock - NewOrder->A[i];
+        bill = bill + (NewOrder->A[i] * data[i].price);
+    }
+    printf("Tong hoa don thanh toan: %.2f\n\n", bill);
+    return;
+}
+
+void Find_favorite(int n)
+{
+    int fav_dish[n];
+    memset(fav_dish, 0, sizeof(fav_dish));
+    orders *NewOrder = makeNode(n);
+    while (NewOrder != NULL)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            fav_dish[i] = fav_dish[i] + NewOrder->A[i];
+        }
+        NewOrder = NewOrder->next;
+    }
+}
+
 void Option()
 {
     printf("Menu:\n");
@@ -65,59 +106,54 @@ int main()
             break;
         case 2:
             if (setjmp(env) == 0)
-            // Set jump point if tmp is invalid
             {
                 printf("Goi mon\n");
-                orders *NewOrder = (orders *)malloc(sizeof(orders));
-                NewOrder->A = (int *)malloc(sizeof(int) * n);
-                NewOrder->next = NULL;
-                // bug appear here, create node have to put into function or head will move with the node
+                orders *NewOrder = makeNode(n);
                 for (int i = 0; i < n; i++)
                 {
                     tmp = 0;
                     while (tmp == 0)
                     {
                         printf("So luong ban muon cho mon %s: ", data[i].dish);
-                        // fflush(stdin);
                         if (scanf("%d", &tmp) != 1)
                         {
-                            // If scanf fails, jump back to the setjmp point
+                            free(NewOrder->A);
                             free(NewOrder);
                             longjmp(env, 1);
                         }
-                        if (tmp < 1)
+                        if (tmp < 0)
                         {
-                            printf("So luong khong hop le");
+                            printf("So luong khong hop le\n");
+                        }
+                        insert(NewOrder, tmp, i);
+                        if (tmp > data[i].in_stock)
+                        {
+                            printf("Nha hang khong du so luong suat an cho mon nay, vui long nhap lai order\n\n");
+                            free(NewOrder->A);
+                            free(NewOrder);
+                            break;
+                        }
+                        if (tmp == 0)
+                        {
+                            i++;
                         }
                     }
-                    NewOrder->A[i] = tmp;
-                    if (tmp > data[i].in_stock)
-                    {
-                        printf("Nha hang ko du so luong suat an cho mon nay, vui long nhap lai order\n\n");
-                        break;
-                    }
                 }
-                // printf("%s\t%d\t%.2f\n", data->dish, head->A[1], head->A[1] * data[1].price);
-                if (head == NULL)
+
+                if (head == NULL && tail == NULL)
                 {
+                    // if there is no order yet
                     tail = NewOrder;
                     head = NewOrder;
-                    printf("+!\n");
                 }
                 else
                 {
+                    // add the new order to the end of the list
                     tail->next = NewOrder;
                     tail = NewOrder;
                 }
-                double bill = 0;
-                for (int i = 0; i < n; i++)
-                {
-                    data[i].in_stock = data[i].in_stock - NewOrder->A[i];
-                    bill = bill + (NewOrder->A[i] * data[i].price);
-                }
-                printf("Tong hoa don: %.2f\n\n", bill);
-                printf("%s\t%d\t%.2f\n", data->dish, head->A[1], head->A[1] * data[1].price);
-                free(NewOrder);
+                Print_Bill(NewOrder, n, data);
+                // printf("%s\t%d\t%.2f\n", data->dish, head->A[1], head->A[1] * data[1].price);
                 break;
             }
             else
@@ -129,11 +165,9 @@ int main()
 
         case 3:
             tmp = 1;
-            orders *NewOrder = (orders *)malloc(sizeof(orders));
-            NewOrder->A = (int *)malloc(sizeof(int) * n);
+            orders *NewOrder = makeNode(n);
             NewOrder = head;
-            printf("%s\t%d\t%.2f\n", data->dish, head->A[1], head->A[1] * data[1].price);
-            /*
+
             while (NewOrder != NULL)
             {
                 printf("Thuc don thu %d\n", tmp);
@@ -143,12 +177,13 @@ int main()
                     // printf("1");
                     if (NewOrder->A[i] != 0)
                     {
-                        printf("%s\t%d\t%.2f\n", data->dish, NewOrder->A[i], NewOrder->A[i] * data[i].price);
+                        printf("%s\t%d\t\t%.2f\n", data->dish, NewOrder->A[i], NewOrder->A[i] * data[i].price);
                     }
                 }
+                Print_Bill(NewOrder, n, data);
                 NewOrder = NewOrder->next;
                 tmp++;
-            }*/
+            }
             free(NewOrder);
             break;
         case 4:
