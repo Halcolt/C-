@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <setjmp.h>
 
 jmp_buf env;
@@ -45,11 +46,12 @@ void Print_Bill(orders *NewOrder, int n, Menu data[])
     return;
 }
 
-void Find_favorite(int n)
+void Find_favorite(int n, Menu data[])
 {
-    int fav_dish[n];
+    int fav_dish[n], max = 0, count = 0;
     memset(fav_dish, 0, sizeof(fav_dish));
     orders *NewOrder = makeNode(n);
+    NewOrder = head;
     while (NewOrder != NULL)
     {
         for (int i = 0; i < n; i++)
@@ -58,6 +60,16 @@ void Find_favorite(int n)
         }
         NewOrder = NewOrder->next;
     }
+    for (int i = 0; i < n; i++)
+    {
+        if (max < fav_dish[i])
+        {
+            max = fav_dish[i];
+            count = i;
+        }
+    }
+    printf("\nMon an ua chuong nhat: %s, So luong da ban: %d\n\n", data[count].dish, max);
+    return;
 }
 
 void Option()
@@ -107,6 +119,7 @@ int main()
         case 2:
             if (setjmp(env) == 0)
             {
+            reset_case2:
                 printf("Goi mon\n");
                 orders *NewOrder = makeNode(n);
                 for (int i = 0; i < n; i++)
@@ -114,6 +127,7 @@ int main()
                     tmp = 0;
                     while (tmp == 0)
                     {
+                        // fflush(stdin);
                         printf("So luong ban muon cho mon %s: ", data[i].dish);
                         if (scanf("%d", &tmp) != 1)
                         {
@@ -131,10 +145,14 @@ int main()
                             printf("Nha hang khong du so luong suat an cho mon nay, vui long nhap lai order\n\n");
                             free(NewOrder->A);
                             free(NewOrder);
-                            break;
+                            goto reset_case2;
                         }
                         if (tmp == 0)
                         {
+                            if (i == n - 1)
+                            {
+                                break;
+                            }
                             i++;
                         }
                     }
@@ -187,7 +205,7 @@ int main()
             free(NewOrder);
             break;
         case 4:
-            printf("Goodbye!\n");
+            Find_favorite(n, data);
             break;
         case 5:
             printf("Goodbye!\n");
