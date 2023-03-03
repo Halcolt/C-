@@ -22,6 +22,9 @@ int addfirst(int value)
         head->prev = newnode;
     }
     head = newnode;
+    {
+        tail = newnode;
+    }
     return 0;
 }
 
@@ -34,15 +37,12 @@ int addlast(int value)
     {
         newnode->prev = NULL;
         head = newnode;
+        tail = newnode;
         return 1;
     }
-    struct Node *temp = head;
-    while (temp->next != NULL)
-    {
-        temp = temp->next;
-    }
-    temp->next = newnode;
-    newnode->prev = temp;
+    newnode->prev = tail;
+    tail->next = newnode;
+    tail = newnode;
     return 0;
 }
 
@@ -182,6 +182,7 @@ int main()
 
     while (1)
     {
+        printf("option: ");
         char cmd[256];
         scanf("%s", cmd);
         if (strcmp(cmd, "#") == 0)
