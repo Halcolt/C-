@@ -171,7 +171,6 @@ int main()
                     tail = NewOrder;
                 }
                 Print_Bill(NewOrder, n, data);
-                // printf("%s\t%d\t%.2f\n", data->dish, head->A[1], head->A[1] * data[1].price);
                 break;
             }
             else

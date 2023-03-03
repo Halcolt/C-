@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-// https://www.youtube.com/watch?v=dMyhU07qcgs
+
 typedef struct node
 {
     char name[256];
@@ -24,12 +24,10 @@ node *insert(node *root, char name[], char email[])
 {
     if (root == NULL)
         return createNode(name, email);
-
     if (strcmp(name, root->name) < 0)
         root->left = insert(root->left, name, email);
     else if (strcmp(name, root->name) > 0)
         root->right = insert(root->right, name, email);
-
     return root;
 }
 
@@ -39,7 +37,6 @@ node *Find(node *root, char name[])
     {
         return root;
     }
-
     if (strcmp(name, root->name) < 0)
         return Find(root->left, name);
     else
@@ -84,7 +81,6 @@ node *Remove(node *root, char name[])
         }
 
         node *temp = minValueNode(root->right);
-
         strcpy(root->name, temp->name);
         strcpy(root->email, temp->email);
 
@@ -151,6 +147,6 @@ int main()
         {
             print_tree(root);
         }
-        }
+    }
     return 0;
 }
