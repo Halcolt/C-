@@ -179,7 +179,6 @@ int main()
         scanf("%d", &value);
         addlast(value);
     }
-
     while (1)
     {
         printList();
